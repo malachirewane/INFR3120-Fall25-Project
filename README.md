@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <p align="center">
   <img src="public/logo.png" width="180" alt="TaskFlow Logo">
 </p>
@@ -65,3 +66,7 @@ INFR3120-Fall25-Project
 
 ```bash
 git clone https://github.com/YOUR-USERNAME/INFR3120-Fall25-Project.git
+=======
+# INFR3120-Fall25-Project
+To-Do Task Manager - First Release
+>>>>>>> 9042304a0a843ed3a39c4afab973f89388a7e8ea
