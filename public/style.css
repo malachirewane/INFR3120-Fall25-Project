@@ -1,0 +1,57 @@
+body {
+  font-family: Arial, sans-serif;
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  background: #f9fafb;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+  background: #333;
+  color: white;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+button {
+  padding: 8px 14px;
+  margin: 10px 0;
+  background: #4f7cff;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+td, th {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+form input, form select {
+  padding: 8px;
+  margin-right: 10px;
+}

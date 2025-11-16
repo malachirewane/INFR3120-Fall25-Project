@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskFlow</title>
+  <link rel="icon" type="image/x-icon" href="logo.png" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f8fb;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      text-align: center;
+      padding: 30px;
+    }
+
+    img {
+      width: 160px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0;
+      color: #245f68;
+      font-size: 2.5rem;
+    }
+
+    .btn {
+      background: #38a3a5;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .btn:hover {
+      opacity: 0.85;
+    }
+
+    table {
+      width: 100%;
+      background: white;
+      margin-top: 40px;
+      border-collapse: collapse;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background: #d6eff2;
+    }
+
+    .actions button {
+      margin: 3px;
+      padding: 6px 12px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .edit {
+      background: #4c956c;
+      color: white;
+    }
+
+    .delete {
+      background: #c1121f;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <img src="logo.png" alt="TaskFlow Logo">
+    <h1>TaskFlow</h1>
+    <button class="btn" onclick="openTaskForm()">+ Add New Task</button>
+
+    <table id="taskTable">
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Due Date</th>
+          <th>Priority</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="taskBody">
+        <!-- Tasks load here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
