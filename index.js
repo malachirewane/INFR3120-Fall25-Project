@@ -6,14 +6,13 @@ import { nanoid } from "nanoid";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// Fix __dirname in ES module mode
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// --- Database Setup ---
+// Database setup
 const file = path.join(__dirname, "db.json");
 const adapter = new JSONFile(file);
 const db = new Low(adapter, { tasks: [] });
@@ -22,11 +21,8 @@ await db.read();
 db.data ||= { tasks: [] };
 await db.write();
 
-// Middleware
 app.use(bodyParser.json());
 app.use(express.static("public"));
-
-// --- API Routes ---
 
 // Get all tasks
 app.get("/api/tasks", async (req, res) => {
@@ -34,7 +30,7 @@ app.get("/api/tasks", async (req, res) => {
   res.json(db.data.tasks);
 });
 
-// Create a task
+// Create task
 app.post("/api/tasks", async (req, res) => {
   const { title, dueDate, priority } = req.body;
 
@@ -52,7 +48,7 @@ app.post("/api/tasks", async (req, res) => {
   res.status(201).json(newTask);
 });
 
-// Update a task
+// Update task
 app.put("/api/tasks/:id", async (req, res) => {
   const task = db.data.tasks.find((t) => t.id === req.params.id);
 
@@ -64,7 +60,7 @@ app.put("/api/tasks/:id", async (req, res) => {
   res.json(task);
 });
 
-// Delete a task
+// Delete task
 app.delete("/api/tasks/:id", async (req, res) => {
   db.data.tasks = db.data.tasks.filter((t) => t.id !== req.params.id);
   await db.write();
@@ -77,7 +73,6 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
-// Start server
 app.listen(PORT, () =>
   console.log(`🚀 Server running at http://localhost:${PORT}`)
 );
