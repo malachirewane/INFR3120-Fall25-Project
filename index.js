@@ -24,25 +24,36 @@ await db.write();
 app.use(bodyParser.json());
 app.use(express.static("public"));
 
+// Helper: format date to YYYY-MM-DD
+function formatDate(date) {
+  return date.toISOString().split("T")[0];
+}
+
 // Get all tasks
 app.get("/api/tasks", async (req, res) => {
   await db.read();
   res.json(db.data.tasks);
 });
 
-// Create a task (with priority validation)
+// Create a task (priority validation + default due date)
 app.post("/api/tasks", async (req, res) => {
   const { title, dueDate, priority } = req.body;
 
+  // Priority validation
   const validPriorities = ["Low", "Medium", "High"];
   const safePriority = validPriorities.includes(priority)
     ? priority
     : "Medium";
 
+  // Default due date: today if none entered
+  const safeDueDate = dueDate && dueDate.trim() !== ""
+    ? dueDate
+    : formatDate(new Date());
+
   const newTask = {
     id: nanoid(6),
     title,
-    dueDate,
+    dueDate: safeDueDate,
     priority: safePriority,
     createdAt: new Date().toISOString()
   };
@@ -62,11 +73,17 @@ app.put("/api/tasks/:id", async (req, res) => {
 
   const updated = req.body;
 
+  // Validate priority on edit
   if (updated.priority) {
     const validPriorities = ["Low", "Medium", "High"];
     updated.priority = validPriorities.includes(updated.priority)
       ? updated.priority
       : task.priority;
+  }
+
+  // Auto-assign today's date if dueDate is empty on edit
+  if (updated.dueDate === "") {
+    updated.dueDate = formatDate(new Date());
   }
 
   Object.assign(task, updated);
