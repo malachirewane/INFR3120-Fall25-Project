@@ -4,106 +4,79 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TaskFlow</title>
-  <link rel="icon" type="image/x-icon" href="logo.png" />
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f8fb;
-      margin: 0;
+      margin: 30px;
       padding: 0;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: auto;
+      background-color: #f7f9fa;
       text-align: center;
-      padding: 30px;
     }
 
     img {
-      width: 160px;
+      width: 120px;
       margin-bottom: 10px;
     }
 
     h1 {
-      margin: 0;
-      color: #245f68;
-      font-size: 2.5rem;
+      color: #2c3e50;
+      margin-bottom: 20px;
     }
 
-    .btn {
-      background: #38a3a5;
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #3498db;
       color: white;
       border: none;
-      padding: 12px 25px;
-      font-size: 1.1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-
-    .btn:hover {
-      opacity: 0.85;
+      border-radius: 5px;
+      margin-bottom: 20px;
     }
 
     table {
-      width: 100%;
-      background: white;
-      margin-top: 40px;
+      width: 80%;
+      margin: 20px auto;
       border-collapse: collapse;
-      border-radius: 8px;
-      overflow: hidden;
+      background: white;
+      box-shadow: 0px 0px 8px rgba(0,0,0,0.1);
     }
 
     th, td {
       padding: 12px;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #ccc;
     }
 
     th {
-      background: #d6eff2;
-    }
-
-    .actions button {
-      margin: 3px;
-      padding: 6px 12px;
-      border-radius: 5px;
-      border: none;
-      cursor: pointer;
-    }
-
-    .edit {
-      background: #4c956c;
+      background-color: #2980b9;
       color: white;
     }
 
-    .delete {
-      background: #c1121f;
-      color: white;
+    tr:hover {
+      background-color: #eef7f9;
+      transition: 0.2s ease-in-out;
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <img src="logo.png" alt="TaskFlow Logo">
-    <h1>TaskFlow</h1>
-    <button class="btn" onclick="openTaskForm()">+ Add New Task</button>
+  <img src="logo.png" alt="TaskFlow Logo" />
+  <h1>TaskFlow</h1>
 
-    <table id="taskTable">
-      <thead>
-        <tr>
-          <th>Task</th>
-          <th>Due Date</th>
-          <th>Priority</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="taskBody">
-        <!-- Tasks load here -->
-      </tbody>
-    </table>
-  </div>
+  <button onclick="openTaskForm()">Add Task</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Priority</th>
+        <th>Due Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="taskTable"></tbody>
+  </table>
 
   <script src="script.js"></script>
 </body>
