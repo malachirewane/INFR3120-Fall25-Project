@@ -24,7 +24,7 @@ await db.write();
 app.use(bodyParser.json());
 app.use(express.static("public"));
 
-// Helper: format date to YYYY-MM-DD
+// Helper: format date (YYYY-MM-DD)
 function formatDate(date) {
   return date.toISOString().split("T")[0];
 }
@@ -35,27 +35,38 @@ app.get("/api/tasks", async (req, res) => {
   res.json(db.data.tasks);
 });
 
+// Get single task by ID
+app.get("/api/tasks/:id", async (req, res) => {
+  await db.read();
+
+  const task = db.data.tasks.find((t) => t.id === req.params.id);
+  if (!task) {
+    return res.status(404).json({ error: "Task not found" });
+  }
+
+  res.json(task);
+});
+
 // Create a task (priority validation + default due date)
 app.post("/api/tasks", async (req, res) => {
   const { title, dueDate, priority } = req.body;
 
-  // Priority validation
   const validPriorities = ["Low", "Medium", "High"];
   const safePriority = validPriorities.includes(priority)
     ? priority
     : "Medium";
 
-  // Default due date: today if none entered
-  const safeDueDate = dueDate && dueDate.trim() !== ""
-    ? dueDate
-    : formatDate(new Date());
+  const safeDueDate =
+    dueDate && dueDate.trim() !== ""
+      ? dueDate
+      : formatDate(new Date());
 
   const newTask = {
     id: nanoid(6),
     title,
     dueDate: safeDueDate,
     priority: safePriority,
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
   };
 
   db.data.tasks.push(newTask);
@@ -64,7 +75,7 @@ app.post("/api/tasks", async (req, res) => {
   res.status(201).json(newTask);
 });
 
-// Update task
+// Update a task
 app.put("/api/tasks/:id", async (req, res) => {
   await db.read();
 
@@ -73,7 +84,6 @@ app.put("/api/tasks/:id", async (req, res) => {
 
   const updated = req.body;
 
-  // Validate priority on edit
   if (updated.priority) {
     const validPriorities = ["Low", "Medium", "High"];
     updated.priority = validPriorities.includes(updated.priority)
@@ -81,7 +91,6 @@ app.put("/api/tasks/:id", async (req, res) => {
       : task.priority;
   }
 
-  // Auto-assign today's date if dueDate is empty on edit
   if (updated.dueDate === "") {
     updated.dueDate = formatDate(new Date());
   }
@@ -92,7 +101,7 @@ app.put("/api/tasks/:id", async (req, res) => {
   res.json(task);
 });
 
-// Delete task
+// Delete a task
 app.delete("/api/tasks/:id", async (req, res) => {
   await db.read();
 
