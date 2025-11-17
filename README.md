@@ -43,22 +43,6 @@ This release represents the foundation for future improvements such as sorting, 
 
 ---
 
-## 📁 Project Structure
-
-INFR3120-Fall25-Project
-│── public/
-│ ├── index.html
-│ ├── script.js
-│ ├── style.css (optional)
-│ └── logo.png
-│── db.json
-│── index.js
-│── package.json
-│── README.md
-
-
----
-
 ## ▶️ Running the Project Locally
 
 1. Clone the repository:
