@@ -30,16 +30,21 @@ app.get("/api/tasks", async (req, res) => {
   res.json(db.data.tasks);
 });
 
-// Create task
+// Create a task (with priority validation)
 app.post("/api/tasks", async (req, res) => {
   const { title, dueDate, priority } = req.body;
+
+  const validPriorities = ["Low", "Medium", "High"];
+  const safePriority = validPriorities.includes(priority)
+    ? priority
+    : "Medium";
 
   const newTask = {
     id: nanoid(6),
     title,
     dueDate,
-    priority,
-    createdAt: new Date().toISOString(),
+    priority: safePriority,
+    createdAt: new Date().toISOString()
   };
 
   db.data.tasks.push(newTask);
@@ -50,11 +55,21 @@ app.post("/api/tasks", async (req, res) => {
 
 // Update task
 app.put("/api/tasks/:id", async (req, res) => {
-  const task = db.data.tasks.find((t) => t.id === req.params.id);
+  await db.read();
 
+  const task = db.data.tasks.find((t) => t.id === req.params.id);
   if (!task) return res.status(404).json({ error: "Task not found" });
 
-  Object.assign(task, req.body);
+  const updated = req.body;
+
+  if (updated.priority) {
+    const validPriorities = ["Low", "Medium", "High"];
+    updated.priority = validPriorities.includes(updated.priority)
+      ? updated.priority
+      : task.priority;
+  }
+
+  Object.assign(task, updated);
   await db.write();
 
   res.json(task);
@@ -62,6 +77,8 @@ app.put("/api/tasks/:id", async (req, res) => {
 
 // Delete task
 app.delete("/api/tasks/:id", async (req, res) => {
+  await db.read();
+
   db.data.tasks = db.data.tasks.filter((t) => t.id !== req.params.id);
   await db.write();
 
@@ -73,6 +90,6 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
-app.listen(PORT, () =>
-  console.log(`🚀 Server running at http://localhost:${PORT}`)
-);
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});
