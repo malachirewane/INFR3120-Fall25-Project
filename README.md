@@ -47,12 +47,14 @@ This release represents the foundation for future improvements such as sorting, 
 
 1. Clone the repository:
 
-```bash
+```
+bash
 git clone https://github.com/YOUR-USERNAME/INFR3120-Fall25-Project.git
 =======
 # INFR3120-Fall25-Project
 To-Do Task Manager - First Release
 >>>>>>> 9042304a0a843ed3a39c4afab973f89388a7e8ea
+```
 
 ---
 
