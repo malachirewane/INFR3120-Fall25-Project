@@ -1,3 +1,4 @@
+/* General layout for the page */
 body {
   font-family: Arial, sans-serif;
   max-width: 900px;
@@ -6,6 +7,7 @@ body {
   background: #f9fafb;
 }
 
+/* Header section used in the older design version */
 header {
   display: flex;
   align-items: center;
@@ -13,6 +15,7 @@ header {
   margin-bottom: 20px;
 }
 
+/* Simple placeholder box logo (from earlier UI attempt) */
 .logo {
   width: 60px;
   height: 60px;
@@ -26,6 +29,7 @@ header {
   font-weight: bold;
 }
 
+/* Button styling for older form version */
 button {
   padding: 8px 14px;
   margin: 10px 0;
@@ -36,21 +40,25 @@ button {
   cursor: pointer;
 }
 
+/* Basic table styling (old layout) */
 table {
   width: 100%;
   border-collapse: collapse;
   background: white;
 }
 
+/* Cell and header styling for the old table */
 td, th {
   border: 1px solid #ddd;
   padding: 10px;
 }
 
+/* Utility class for hiding elements */
 .hidden {
   display: none;
 }
 
+/* Inputs for the original form-based UI */
 form input, form select {
   padding: 8px;
   margin-right: 10px;
