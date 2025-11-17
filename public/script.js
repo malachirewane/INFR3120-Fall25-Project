@@ -1,3 +1,4 @@
+// Load all tasks and display them in the table
 async function loadTasks() {
   const res = await fetch("/api/tasks");
   const tasks = await res.json();
@@ -26,7 +27,9 @@ async function loadTasks() {
 
 async function openTaskForm() {
   let title = prompt("Enter task name:");
-  if (!title) return;
+  while (!title || title.trim() === "") {
+    title = prompt("Task name cannot be empty.\nPlease enter a valid task name:");
+  }
 
   const priority = prompt("Enter priority (Low, Medium, High):");
   const dueDate = prompt("Enter due date (YYYY-MM-DD):");
@@ -40,13 +43,19 @@ async function openTaskForm() {
   loadTasks();
 }
 
+// Delete a task by ID
 async function deleteTask(id) {
   await fetch(`/api/tasks/${id}`, { method: "DELETE" });
   loadTasks();
 }
 
+// Edit an existing task
 async function editTask(id) {
-  const title = prompt("New task name:");
+  let title = prompt("New task name:");
+  while (!title || title.trim() === "") {
+    title = prompt("Task name cannot be empty.\nPlease enter a valid task name:");
+  }
+
   const priority = prompt("New priority (Low, Medium, High):");
   const dueDate = prompt("New due date:");
 
@@ -59,4 +68,5 @@ async function editTask(id) {
   loadTasks();
 }
 
+// Initialize table on page load
 loadTasks();
