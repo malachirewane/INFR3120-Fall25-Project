@@ -6,6 +6,7 @@
   <title>TaskFlow</title>
 
   <style>
+    /* Basic page styling */
     body {
       font-family: Arial, sans-serif;
       margin: 30px;
@@ -14,16 +15,19 @@
       text-align: center;
     }
 
+    /* Logo on the landing page */
     img {
       width: 120px;
       margin-bottom: 10px;
     }
 
+    /* Main title */
     h1 {
       color: #2c3e50;
       margin-bottom: 20px;
     }
 
+    /* Button styling for Add Task */
     button {
       padding: 10px 20px;
       font-size: 16px;
@@ -35,6 +39,7 @@
       margin-bottom: 20px;
     }
 
+    /* Task table styling */
     table {
       width: 80%;
       margin: 20px auto;
@@ -54,13 +59,13 @@
       color: white;
     }
 
-    /* Hover effect */
+    /* Small hover highlight for rows */
     tr:hover {
       background-color: #eef7f9;
       transition: 0.2s ease-in-out;
     }
 
-    /* Priority badges */
+    /* Priority badge styles */
     .priority-badge {
       padding: 4px 8px;
       border-radius: 6px;
@@ -76,11 +81,14 @@
 
 <body>
 
+  <!-- Logo and title for the site -->
   <img src="logo.png" alt="TaskFlow Logo" />
   <h1>TaskFlow</h1>
 
+  <!-- Button to create a new task (opens JS prompts) -->
   <button onclick="openTaskForm()">Add Task</button>
 
+  <!-- Table where tasks will be loaded -->
   <table>
     <thead>
       <tr>
@@ -93,10 +101,12 @@
     <tbody id="taskTable"></tbody>
   </table>
 
+  <!-- Simple footer for branding -->
   <footer style="margin-top:40px; color:#6c7a81; font-size:14px; text-align:center;">
     TaskFlow © 2025 • Built by Malachi & Shayaan for INFR3120
   </footer>
 
+  <!-- Link to JavaScript file -->
   <script src="script.js"></script>
 </body>
 </html>
