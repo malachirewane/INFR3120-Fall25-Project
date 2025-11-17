@@ -54,3 +54,19 @@ git clone https://github.com/YOUR-USERNAME/INFR3120-Fall25-Project.git
 To-Do Task Manager - First Release
 >>>>>>> 9042304a0a843ed3a39c4afab973f89388a7e8ea
 
+---
+
+## Frontend Overview (By Shayaan)
+
+The frontend for TaskFlow is built using **HTML**, **CSS**, and **JavaScript**. It provides users with a simple interface to manage tasks through CRUD interactions.
+
+Key features implemented on the frontend:
+- Responsive landing page with the TaskFlow logo, title, and main action button.
+- Clean task table that lists all tasks retrieved from the backend API.
+- Visual priority badges with different colours for Low, Medium, and High priorities.
+- Hover effects on table rows for a more visually appealing user experience.
+- JavaScript functions that interact with the backend API to create, update, and delete tasks.
+- User input validation to prevent creating tasks with empty names.
+- Footer section for branding and project information.
+
+The **script.js** file manages all real-time interactions between the user interface and the backend API which ensures that all users can easily modify their tasks.
