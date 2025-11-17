@@ -46,6 +46,7 @@
     th, td {
       padding: 12px;
       border-bottom: 1px solid #ccc;
+      text-align: center;
     }
 
     th {
@@ -53,14 +54,28 @@
       color: white;
     }
 
+    /* Hover effect /
     tr:hover {
       background-color: #eef7f9;
       transition: 0.2s ease-in-out;
     }
+
+    / Priority badges */
+    .priority-badge {
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .priority-badge.low { background-color: green; }
+    .priority-badge.medium { background-color: orange; }
+    .priority-badge.high { background-color: red; }
   </style>
 </head>
 
 <body>
+
   <img src="logo.png" alt="TaskFlow Logo" />
   <h1>TaskFlow</h1>
 
