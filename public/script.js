@@ -25,7 +25,7 @@ async function loadTasks() {
   });
 }
 
-// Create a new task (using prompts for now)
+// Create a new task with prompts
 async function openTaskForm() {
   let title = prompt("Enter task name:");
 
@@ -37,18 +37,31 @@ async function openTaskForm() {
   const priority = prompt("Enter priority (Low, Medium, High):");
   const dueDate = prompt("Enter due date (YYYY-MM-DD):");
 
-  await fetch("/api/tasks", {
+  const res = await fetch("/api/tasks", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ title, priority, dueDate })
   });
+
+  if (res.status === 401) {
+    alert("You must be logged in to add tasks.");
+    window.location.href = "/login.html";
+    return;
+  }
 
   loadTasks();
 }
 
 // Delete task by ID
 async function deleteTask(id) {
-  await fetch(`/api/tasks/${id}`, { method: "DELETE" });
+  const res = await fetch(`/api/tasks/${id}`, { method: "DELETE" });
+
+  if (res.status === 401) {
+    alert("You must be logged in to delete tasks.");
+    window.location.href = "/login.html";
+    return;
+  }
+
   loadTasks();
 }
 
@@ -64,11 +77,17 @@ async function editTask(id) {
   const priority = prompt("New priority (Low, Medium, High):");
   const dueDate = prompt("New due date:");
 
-  await fetch(`/api/tasks/${id}`, {
+  const res = await fetch(`/api/tasks/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ title, priority, dueDate })
   });
+
+  if (res.status === 401) {
+    alert("You must be logged in to edit tasks.");
+    window.location.href = "/login.html";
+    return;
+  }
 
   loadTasks();
 }
