@@ -1,4 +1,15 @@
 {
   "tasks": [],
-  "users": []
+  "users": [
+    {
+      "id": "5bw0PPXCTZZg0Z2ihWfQZ",
+      "email": "soyelo7529@feralrex.com",
+      "passwordHash": "...."
+    },
+    {
+      "id": "VOWJOqLEVSt1_TU0b8cBR",
+      "email": "lilekike@denipl.net",
+      "passwordHash": "...."
+    }
+  ]
 }

@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (userSpan) userSpan.style.display = "none";
   }
 
-  // Logout handler
+  // Logout handler (navbar)
   if (logoutForm) {
     logoutForm.addEventListener("submit", async (event) => {
       event.preventDefault();

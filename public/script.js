@@ -6,7 +6,7 @@ async function loadTasks() {
   const table = document.getElementById("taskTable");
   table.innerHTML = "";
 
-  tasks.forEach(task => {
+  tasks.forEach((task) => {
     const row = document.createElement("tr");
 
     row.innerHTML = `
@@ -25,13 +25,15 @@ async function loadTasks() {
   });
 }
 
-// Create a new task with prompts
+// Create a new task using prompts
 async function openTaskForm() {
   let title = prompt("Enter task name:");
 
   // Keep asking until a valid title is entered
   while (!title || title.trim() === "") {
-    title = prompt("Task name cannot be empty.\nPlease enter a valid task name:");
+    title = prompt(
+      "Task name cannot be empty.\nPlease enter a valid task name:"
+    );
   }
 
   const priority = prompt("Enter priority (Low, Medium, High):");
@@ -40,7 +42,7 @@ async function openTaskForm() {
   const res = await fetch("/api/tasks", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ title, priority, dueDate })
+    body: JSON.stringify({ title, priority, dueDate }),
   });
 
   if (res.status === 401) {
@@ -71,16 +73,18 @@ async function editTask(id) {
 
   // Block empty task names
   while (!title || title.trim() === "") {
-    title = prompt("Task name cannot be empty.\nPlease enter a valid task name:");
+    title = prompt(
+      "Task name cannot be empty.\nPlease enter a valid task name:"
+    );
   }
 
   const priority = prompt("New priority (Low, Medium, High):");
-  const dueDate = prompt("New due date:");
+  const dueDate = prompt("New due date (YYYY-MM-DD):");
 
   const res = await fetch(`/api/tasks/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ title, priority, dueDate })
+    body: JSON.stringify({ title, priority, dueDate }),
   });
 
   if (res.status === 401) {
@@ -93,4 +97,4 @@ async function editTask(id) {
 }
 
 // Start by loading tasks on page load
-loadTasks();
+document.addEventListener("DOMContentLoaded", loadTasks);

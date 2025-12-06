@@ -15,26 +15,25 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Database setup
+// --------------------
+// LowDB SETUP
+// --------------------
 const adapter = new JSONFile(path.join(__dirname, "db.json"));
 const db = new Low(adapter, { tasks: [], users: [] });
 
+// Ensure db shape
 await db.read();
-if (!db.data) {
-  db.data = { tasks: [], users: [] };
-}
-if (!db.data.tasks) {
-  db.data.tasks = [];
-}
-if (!db.data.users) {
-  db.data.users = [];
-}
+if (!db.data) db.data = { tasks: [], users: [] };
+if (!db.data.tasks) db.data.tasks = [];
+if (!db.data.users) db.data.users = [];
 
-// Middleware
+// --------------------
+// MIDDLEWARE
+// --------------------
 app.use(bodyParser.json());
 app.use(
   session({
-    // For this project a hard-coded secret is fine.
+    // Hard-coded secret is fine for this project
     secret: "taskflow-session-secret",
     resave: false,
     saveUninitialized: false,
@@ -42,7 +41,9 @@ app.use(
 );
 app.use(express.static("public"));
 
-// Auth helpers
+// --------------------
+// AUTH HELPERS
+// --------------------
 function requireLogin(req, res, next) {
   if (!req.session.userId) {
     return res.status(401).json({ error: "Not logged in" });
@@ -50,7 +51,9 @@ function requireLogin(req, res, next) {
   next();
 }
 
-// Auth routes
+// --------------------
+// AUTH ROUTES
+// --------------------
 app.post("/auth/register", async (req, res) => {
   const { email, password, confirmPassword } = req.body;
 
@@ -81,8 +84,6 @@ app.post("/auth/register", async (req, res) => {
   await db.write();
 
   req.session.userId = user.id;
-
-  // Only send basic user info back
   res.json({ id: user.id, email: user.email });
 });
 
@@ -113,9 +114,7 @@ app.post("/auth/login", async (req, res) => {
 
 app.post("/auth/logout", (req, res) => {
   req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).json({ error: "Could not log out." });
-    }
+    if (err) return res.status(500).json({ error: "Could not log out." });
     res.clearCookie("connect.sid");
     res.json({ message: "Logged out" });
   });
@@ -128,7 +127,6 @@ app.get("/auth/me", async (req, res) => {
 
   await db.read();
   const user = db.data.users.find((u) => u.id === req.session.userId);
-
   if (!user) {
     return res.status(401).json({ error: "Not logged in" });
   }
@@ -136,15 +134,17 @@ app.get("/auth/me", async (req, res) => {
   res.json({ id: user.id, email: user.email });
 });
 
-// Task API routes
+// --------------------
+// TASK API ROUTES
+// --------------------
 
-// Everyone can view tasks
+// Everyone can READ tasks
 app.get("/api/tasks", async (req, res) => {
   await db.read();
   res.json(db.data.tasks);
 });
 
-// Only logged-in users can create tasks
+// Only logged in can CREATE
 app.post("/api/tasks", requireLogin, async (req, res) => {
   const { title, priority, dueDate } = req.body;
 
@@ -161,26 +161,21 @@ app.post("/api/tasks", requireLogin, async (req, res) => {
   res.status(201).json(newTask);
 });
 
-// Get a single task by id (public)
+// Read single task
 app.get("/api/tasks/:id", async (req, res) => {
   await db.read();
   const task = db.data.tasks.find((t) => t.id === req.params.id);
 
-  if (!task) {
-    return res.status(404).json({ error: "Task not found" });
-  }
-
+  if (!task) return res.status(404).json({ error: "Task not found" });
   res.json(task);
 });
 
-// Update a task (logged-in users only)
+// Update task (logged in)
 app.put("/api/tasks/:id", requireLogin, async (req, res) => {
   await db.read();
   const task = db.data.tasks.find((t) => t.id === req.params.id);
 
-  if (!task) {
-    return res.status(404).json({ error: "Task not found" });
-  }
+  if (!task) return res.status(404).json({ error: "Task not found" });
 
   task.title = req.body.title;
   task.priority = req.body.priority;
@@ -190,7 +185,7 @@ app.put("/api/tasks/:id", requireLogin, async (req, res) => {
   res.json(task);
 });
 
-// Delete a task (logged-in users only)
+// Delete task (logged in)
 app.delete("/api/tasks/:id", requireLogin, async (req, res) => {
   await db.read();
   db.data.tasks = db.data.tasks.filter((t) => t.id !== req.params.id);
@@ -199,7 +194,9 @@ app.delete("/api/tasks/:id", requireLogin, async (req, res) => {
   res.json({ message: "Task deleted" });
 });
 
-// Frontend
+// --------------------
+// FRONTEND
+// --------------------
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
