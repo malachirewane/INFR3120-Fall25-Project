@@ -1,7 +1,12 @@
 // Load and display all tasks in the table
 async function loadTasks() {
   const res = await fetch("/api/tasks");
+  if (!res.ok) {
+    console.error("Failed to load tasks", res.status);
+    return;
+  }
   const tasks = await res.json();
+
 
   const table = document.getElementById("taskTable");
   table.innerHTML = "";
