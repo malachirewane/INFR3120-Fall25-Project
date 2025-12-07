@@ -16,6 +16,10 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
 // ✅ FIX CORS SO ANGULAR CAN CALL YOUR API
 app.use(cors({
   origin: "http://localhost:4200",
