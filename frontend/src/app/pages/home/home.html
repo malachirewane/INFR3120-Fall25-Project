@@ -24,8 +24,10 @@
         <td>{{ task.dueDate || 'None' }}</td>
 
         <td>
-          <button class="action-btn edit" (click)="editTask(task.id)">Edit</button>
-          <button class="action-btn delete" (click)="deleteTask(task.id)">Delete</button>
+          <button class="action-btn edit" (click)="editTask(task)">Edit</button>
+          <button class="action-btn delete" (click)="deleteTask(task.id)">
+            Delete
+          </button>
         </td>
       </tr>
     </tbody>

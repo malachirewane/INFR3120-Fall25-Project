@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TaskService, Task } from '../../services/task.service';
+import { TaskService } from '../../services/task.service';
+
+export interface Task {
+  id: string;
+  title: string;
+  priority?: string;
+  dueDate?: string;
+}
 
 @Component({
   selector: 'app-home',
@@ -14,40 +21,41 @@ export class HomeComponent implements OnInit {
 
   constructor(private taskService: TaskService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadTasks();
   }
 
-  loadTasks() {
+  loadTasks(): void {
     this.taskService.getTasks().subscribe((tasks: Task[]) => {
       this.tasks = tasks;
     });
   }
 
-  addTask() {
+  addTask(): void {
     const title = prompt('Enter task name:');
     if (!title || title.trim() === '') return;
 
     const priority = prompt('Enter priority (Low, Medium, High):') || '';
     const dueDate = prompt('Enter due date (YYYY-MM-DD):') || '';
 
-    this.taskService.addTask({ title, priority, dueDate })
+    this.taskService
+      .addTask({ title, priority, dueDate })
       .subscribe(() => this.loadTasks());
   }
 
-  deleteTask(id: string) {
-    this.taskService.deleteTask(id)
-      .subscribe(() => this.loadTasks());
-  }
-
-  editTask(task: Task) {
+  editTask(task: Task): void {
     const title = prompt('New task name:', task.title);
     if (!title || title.trim() === '') return;
 
     const priority = prompt('New priority:', task.priority || '') || '';
     const dueDate = prompt('New due date:', task.dueDate || '') || '';
 
-    this.taskService.updateTask(task.id, { title, priority, dueDate })
+    this.taskService
+      .editTask(task.id, { title, priority, dueDate })
       .subscribe(() => this.loadTasks());
+  }
+
+  deleteTask(id: string): void {
+    this.taskService.deleteTask(id).subscribe(() => this.loadTasks());
   }
 }

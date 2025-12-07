@@ -13,7 +13,7 @@ export interface Task {
   providedIn: 'root'
 })
 export class TaskService {
-  private apiUrl = '/api/tasks';
+  private apiUrl = 'https://infr3120-fall25-project-e8ou.onrender.com/api/tasks';
 
   constructor(private http: HttpClient) {}
 
@@ -31,5 +31,9 @@ export class TaskService {
 
   updateTask(id: string, task: Partial<Task>): Observable<Task> {
     return this.http.put<Task>(`${this.apiUrl}/${id}`, task);
+  }
+
+  editTask(id: string, task: Partial<Task>) {
+    return this.http.put(`${this.apiUrl}/${id}`, task);
   }
 }
