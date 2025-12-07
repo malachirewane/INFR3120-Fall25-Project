@@ -1,22 +1,33 @@
-<h1>My Tasks</h1>
+<div class="container">
+  <h1>My Tasks</h1>
 
-<button (click)="addTask()">Add Task</button>
+  <button class="add-btn" (click)="addTask()">Add Task</button>
 
-<table border="1" cellpadding="8">
-  <tr>
-    <th>Title</th>
-    <th>Priority</th>
-    <th>Due Date</th>
-    <th>Actions</th>
-  </tr>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Priority</th>
+        <th>Due Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
 
-  <tr *ngFor="let task of tasks">
-    <td>{{ task.title }}</td>
-    <td>{{ task.priority || 'None' }}</td>
-    <td>{{ task.dueDate || 'None' }}</td>
-    <td>
-      <button (click)="editTask(task)">Edit</button>
-      <button (click)="deleteTask(task.id)">Delete</button>
-    </td>
-  </tr>
-</table>
+    <tbody>
+      <tr *ngFor="let task of tasks">
+        <td>{{ task.title }}</td>
+
+        <td [ngClass]="task.priority?.toLowerCase()">
+          {{ task.priority }}
+        </td>
+
+        <td>{{ task.dueDate || 'None' }}</td>
+
+        <td>
+          <button class="action-btn edit" (click)="editTask(task.id)">Edit</button>
+          <button class="action-btn delete" (click)="deleteTask(task.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,84 @@
+/* Page container */
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  font-family: Arial, sans-serif;
+}
+
+/* Title */
+h1 {
+  margin-bottom: 20px;
+}
+
+/* Add task button */
+.add-btn {
+  padding: 8px 14px;
+  margin-bottom: 15px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  background-color: #1e4ed8;
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #f3f4f6;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+/* Priority colors */
+.low {
+  color: green;
+  font-weight: bold;
+}
+
+.medium {
+  color: orange;
+  font-weight: bold;
+}
+
+.high {
+  color: red;
+  font-weight: bold;
+}
+
+/* Action buttons */
+.action-btn {
+  padding: 5px 10px;
+  margin-right: 6px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.edit {
+  background-color: #facc15;
+}
+
+.delete {
+  background-color: #ef4444;
+  color: white;
+}
+
+.edit:hover {
+  background-color: #eab308;
+}
+
+.delete:hover {
+  background-color: #dc2626;
+}
