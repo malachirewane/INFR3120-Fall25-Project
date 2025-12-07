@@ -1,0 +1,22 @@
+<h1>My Tasks</h1>
+
+<button (click)="addTask()">Add Task</button>
+
+<table border="1" cellpadding="8">
+  <tr>
+    <th>Title</th>
+    <th>Priority</th>
+    <th>Due Date</th>
+    <th>Actions</th>
+  </tr>
+
+  <tr *ngFor="let task of tasks">
+    <td>{{ task.title }}</td>
+    <td>{{ task.priority || 'None' }}</td>
+    <td>{{ task.dueDate || 'None' }}</td>
+    <td>
+      <button (click)="editTask(task)">Edit</button>
+      <button (click)="deleteTask(task.id)">Delete</button>
+    </td>
+  </tr>
+</table>

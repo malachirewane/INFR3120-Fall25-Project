@@ -7,6 +7,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import session from "express-session";
 import bcrypt from "bcryptjs";
+import cors from "cors"; // ✅ ADD THIS
 
 // __dirname support for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -14,6 +15,12 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// ✅ FIX CORS SO ANGULAR CAN CALL YOUR API
+app.use(cors({
+  origin: "http://localhost:4200",
+  credentials: true
+}));
 
 // --------------------
 // LowDB SETUP

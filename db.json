@@ -1,5 +1,12 @@
 {
-  "tasks": [],
+  "tasks": [
+    {
+      "id": "c2pTVa",
+      "title": "sadsa",
+      "priority": "sadad",
+      "dueDate": "asdasd"
+    }
+  ],
   "users": [
     {
       "id": "5bw0PPXCTZZg0Z2ihWfQZ",
@@ -10,6 +17,11 @@
       "id": "VOWJOqLEVSt1_TU0b8cBR",
       "email": "lilekike@denipl.net",
       "passwordHash": "...."
+    },
+    {
+      "id": "0dft4fiGkg8i47OY-cZ1B",
+      "email": "joyimoy868@cexch.com",
+      "passwordHash": "$2a$10$neQfxUU421N4NzSvjFZPHemmjGojC9kjTvlxkeyr4fzEaINamnOEe"
     }
   ]
 }
