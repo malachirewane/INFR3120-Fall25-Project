@@ -1,95 +1,94 @@
-<p align="center">
-  <img src="public/logo.png" width="160" alt="TaskFlow Logo">
-</p>
+# INFR3120 – Project Part III  
+## Task Management Web Application
 
-<h2 align="center">TaskFlow</h2>
-<p align="center">A simple task manager built with Node.js, Express, LowDB, and a lightweight frontend.</p>
+### Group Project – Final Release
 
 ---
 
-## Overview
-TaskFlow is a basic CRUD web application that allows users to create, view, edit, and delete tasks.
-The goal of this first release is to demonstrate a functional full-stack workflow using a backend API and a simple user interface.
-
-The application includes:
-- A landing page with logo and project title
-- A button to add new tasks
-- A table listing existing tasks
-- Full Create, Read, Update, and Delete support
-
-Deployment is done on Render for public access.
+## 📌 Project Description
+This project is a **Task Management Web Application** developed for **INFR3120 – Web and Scripting Programming**. The application allows users to view tasks and, once authenticated, create, edit, and delete tasks. The final release demonstrates the use of an **Angular frontend**, a **Node.js/Express backend**, and cloud deployment.
 
 ---
 
-## Features
-- Add tasks with priority and due date
-- Edit and delete existing tasks
-- Table view of all tasks
-- Priority colour badges
-- Hover effects and basic UI styling
-- JSON-based storage using LowDB
+## 🛠️ Technologies Used
+
+### Frontend
+- Angular (Standalone Components)
+- HTML & CSS
+- Angular Routing
+- Angular HttpClient
+
+### Backend
+- Node.js
+- Express.js
+- LowDB (JSON-based database)
+- express-session (authentication)
+- bcryptjs (password hashing)
+
+### Deployment
+- Render (Backend and Frontend)
 
 ---
 
-## Tech Stack
-- Node.js & Express
-- LowDB (JSON database)
-- HTML / CSS / JavaScript
-- Render (deployment)
+## ✅ Features
+- View all tasks
+- Create tasks (login required)
+- Edit tasks (login required)
+- Delete tasks (login required)
+- User authentication (register, login, logout)
+- Persistent storage using LowDB
+- RESTful API communication
+- Angular component-based architecture
 
 ---
 
-## Running the Project
+## 🌐 Live Deployment
+https://infr3120-fall25-project-e8ou.onrender.com
 
+---
+
+## ▶️ How to Run Locally
+
+### 1. Install dependencies
+
+```bash
 npm install
-npm start
 
+2. Start the backend server
 
-The app runs at:
+node index.js
+
+Server runs at:
 
 http://localhost:3000
 
----
+3. Run Angular separately (optional)
 
-## Frontend (By Shayaan)
-- Designed the landing page and table layout
-- Added hover effects and coloured priority badges
-- Implemented JavaScript to call the backend API
-- Added simple client-side validation
-- Created the team logo and footer
+cd frontend
+ng serve --proxy-config proxy.conf.json
 
----
+Angular runs at:
 
-## Backend (By Malachi)
-- Built full CRUD API using Express
-- Added priority validation (“Low”, “Medium”, “High”)
-- Added automatic default due date (today’s date if blank)
-- Added route to fetch a single task by ID
-- Connected LowDB for JSON storage
-- Set up deployment and static file hosting
+http://localhost:4200
 
----
+📁 Project Structure (Simplified)
 
-## External Code Used (Under 10% Rule)
-TaskFlow uses a small amount of external code as allowed by the course guidelines:
+INFR3120-Fall25-Project
+ ├─ index.js
+ ├─ db.json
+ ├─ package.json
+ ├─ public/          (Angular production build)
+ │   ├─ index.html
+ │   ├─ main-*.js
+ │   ├─ styles-*.css
+ └─ frontend/        (Angular source code)
 
-1. **LowDB Initialization Example**
-   *Source:* LowDB Documentation
-   *Author:* Sindre Sorhus & LowDB Team
-   *URL:* https://github.com/typicode/lowdb
-   *Usage:* Used as reference for creating the LowDB adapter and initializing the JSON database.
+📹 Demo Video
 
-2. **Express Static File Serving Pattern**
-   *Source:* Express.js Documentation
-   *URL:* https://expressjs.com/en/starter/static-files.html
-   *Usage:* Used for serving files from the `public` directory.
+A demonstration video explaining the application functionality and code has been recorded. The video link is provided in the Canvas submission comments.
+👥 Group Contribution
 
-All external code is used within the 10% limit, understood fully, and documented with inline comments.
+This was a group project. Each group member contributed code using their own GitHub account, and contributions are visible in the GitHub commit history.
+📄 Academic Honesty Statement
 
----
-
-## Contributors
-| Name | Role |
-|------|------|
-| **Malachi Rewane** | Backend development & deployment |
-| **Shayaan Qureshi** | Frontend UI & interactions |
+All work submitted for this project is our own. Lecture materials were used where applicable. No external code beyond allowed limits was used without understanding or attribution.
