@@ -10,6 +10,11 @@ h1 {
   margin-bottom: 20px;
 }
 
+/* Table row hover effect */
+tbody tr:hover {
+  background-color: #f9fafb;
+}
+
 /* Add task button */
 .add-btn {
   padding: 8px 14px;
