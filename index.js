@@ -7,53 +7,48 @@ import path from "path";
 import { fileURLToPath } from "url";
 import session from "express-session";
 import bcrypt from "bcryptjs";
-import cors from "cors"; // ✅ ADD THIS
+import cors from "cors";
 
-// __dirname support for ES modules
+// --------------------
+// SETUP
+// --------------------
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-// ✅ FIX CORS SO ANGULAR CAN CALL YOUR API
+// --------------------
+// MIDDLEWARE
+// --------------------
 app.use(cors({
-  origin: "http://localhost:4200",
-  credentials: true
+  origin: true,
+  credentials: true,
 }));
 
+app.use(bodyParser.json());
+
+app.use(
+  session({
+    secret: "taskflow-session-secret",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
 // --------------------
-// LowDB SETUP
+// DATABASE (LowDB)
 // --------------------
 const adapter = new JSONFile(path.join(__dirname, "db.json"));
 const db = new Low(adapter, { tasks: [], users: [] });
 
-// Ensure db shape
 await db.read();
 if (!db.data) db.data = { tasks: [], users: [] };
 if (!db.data.tasks) db.data.tasks = [];
 if (!db.data.users) db.data.users = [];
 
 // --------------------
-// MIDDLEWARE
-// --------------------
-app.use(bodyParser.json());
-app.use(
-  session({
-    // Hard-coded secret is fine for this project
-    secret: "taskflow-session-secret",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-app.use(express.static("public"));
-
-// --------------------
-// AUTH HELPERS
+// AUTH HELPER
 // --------------------
 function requireLogin(req, res, next) {
   if (!req.session.userId) {
@@ -69,20 +64,19 @@ app.post("/auth/register", async (req, res) => {
   const { email, password, confirmPassword } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ error: "Email and password are required." });
+    return res.status(400).json({ error: "Missing fields" });
   }
-
   if (confirmPassword && password !== confirmPassword) {
-    return res.status(400).json({ error: "Passwords do not match." });
+    return res.status(400).json({ error: "Passwords do not match" });
   }
 
   await db.read();
-  const existing = db.data.users.find(
-    (u) => u.email.toLowerCase() === email.toLowerCase()
+  const exists = db.data.users.find(
+    (u) => u.email === email.toLowerCase()
   );
 
-  if (existing) {
-    return res.status(400).json({ error: "Email is already registered." });
+  if (exists) {
+    return res.status(400).json({ error: "Email already exists" });
   }
 
   const user = {
@@ -101,22 +95,13 @@ app.post("/auth/register", async (req, res) => {
 app.post("/auth/login", async (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || !password) {
-    return res.status(400).json({ error: "Email and password are required." });
-  }
-
   await db.read();
   const user = db.data.users.find(
-    (u) => u.email.toLowerCase() === email.toLowerCase()
+    (u) => u.email === email.toLowerCase()
   );
 
-  if (!user) {
-    return res.status(400).json({ error: "Invalid email or password." });
-  }
-
-  const ok = bcrypt.compareSync(password, user.passwordHash);
-  if (!ok) {
-    return res.status(400).json({ error: "Invalid email or password." });
+  if (!user || !bcrypt.compareSync(password, user.passwordHash)) {
+    return res.status(400).json({ error: "Invalid login" });
   }
 
   req.session.userId = user.id;
@@ -124,8 +109,7 @@ app.post("/auth/login", async (req, res) => {
 });
 
 app.post("/auth/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) return res.status(500).json({ error: "Could not log out." });
+  req.session.destroy(() => {
     res.clearCookie("connect.sid");
     res.json({ message: "Logged out" });
   });
@@ -137,7 +121,10 @@ app.get("/auth/me", async (req, res) => {
   }
 
   await db.read();
-  const user = db.data.users.find((u) => u.id === req.session.userId);
+  const user = db.data.users.find(
+    (u) => u.id === req.session.userId
+  );
+
   if (!user) {
     return res.status(401).json({ error: "Not logged in" });
   }
@@ -146,47 +133,33 @@ app.get("/auth/me", async (req, res) => {
 });
 
 // --------------------
-// TASK API ROUTES
+// TASK ROUTES
 // --------------------
-
-// Everyone can READ tasks
 app.get("/api/tasks", async (req, res) => {
   await db.read();
   res.json(db.data.tasks);
 });
 
-// Only logged in can CREATE
 app.post("/api/tasks", requireLogin, async (req, res) => {
   const { title, priority, dueDate } = req.body;
 
-  const newTask = {
+  const task = {
     id: nanoid(6),
     title,
     priority,
     dueDate,
   };
 
-  db.data.tasks.push(newTask);
+  db.data.tasks.push(task);
   await db.write();
 
-  res.status(201).json(newTask);
+  res.status(201).json(task);
 });
 
-// Read single task
-app.get("/api/tasks/:id", async (req, res) => {
-  await db.read();
-  const task = db.data.tasks.find((t) => t.id === req.params.id);
-
-  if (!task) return res.status(404).json({ error: "Task not found" });
-  res.json(task);
-});
-
-// Update task (logged in)
 app.put("/api/tasks/:id", requireLogin, async (req, res) => {
   await db.read();
   const task = db.data.tasks.find((t) => t.id === req.params.id);
-
-  if (!task) return res.status(404).json({ error: "Task not found" });
+  if (!task) return res.status(404).json({ error: "Not found" });
 
   task.title = req.body.title;
   task.priority = req.body.priority;
@@ -196,22 +169,28 @@ app.put("/api/tasks/:id", requireLogin, async (req, res) => {
   res.json(task);
 });
 
-// Delete task (logged in)
 app.delete("/api/tasks/:id", requireLogin, async (req, res) => {
   await db.read();
-  db.data.tasks = db.data.tasks.filter((t) => t.id !== req.params.id);
+  db.data.tasks = db.data.tasks.filter(
+    (t) => t.id !== req.params.id
+  );
   await db.write();
 
-  res.json({ message: "Task deleted" });
+  res.json({ message: "Deleted" });
 });
 
 // --------------------
-// FRONTEND
+// ANGULAR FRONTEND
 // --------------------
-app.get("/", (req, res) => {
+app.use(express.static("public"));
+
+app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+// --------------------
+// START SERVER
+// --------------------
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
